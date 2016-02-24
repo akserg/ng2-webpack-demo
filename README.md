@@ -1,6 +1,6 @@
 # ng2-webpack-demo
 
-> An Angular 2 starter kit featuring [Angular 2](https://angular.io) and [Webpack](http://webpack.github.io/) by 
+> An Angular 2 starter kit featuring [Angular 2](https://angular.io) and [Webpack](http://webpack.github.io/)
 > 
 > This is a fork of [Angular2 Webpack Starter](https://github.com/AngularClass/angular2-webpack-starter) to demonstrate the use of ng2-toasty.
 > .
