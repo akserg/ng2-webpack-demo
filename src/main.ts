@@ -8,6 +8,7 @@ import {Component, Injectable} from 'angular2/core';
 import {bootstrap} from 'angular2/platform/browser';
 import {NgForm} from 'angular2/common';
 import {ToastyService, ToastyConfig, Toasty, ToastOptions, ToastData} from 'ng2-toasty/ng2-toasty';
+import {Subject, Observable, Subscription} from 'rxjs/Rx';
 
 require('!style!css!ng2-toasty/ng2-toasty.css');
 
@@ -20,6 +21,7 @@ require('!style!css!ng2-toasty/ng2-toasty.css');
 export class HelloApp {
 
     button = 'ping';
+    button2 = 'ping';
 
     themes = [{
         name: 'Default Theme',
@@ -61,6 +63,14 @@ export class HelloApp {
         type: this.types[0].code
     };
 
+    getTitle(num: number): string {
+        return 'Countdown: ' + num;
+    }
+
+    getMessage(num: number): string {
+        return 'Seconds left: ' + num;
+    }
+
     constructor (private toastyService: ToastyService) { }
 
     newToast() {
@@ -78,6 +88,49 @@ export class HelloApp {
             },
             onRemove: function(toast: ToastData) {
                 console.log('Toast ' + toast.id + ' has been removed!');
+            }
+        };
+
+        switch (this.options.type) {
+            case 'default': this.toastyService.default(toastOptions); break;
+            case 'info': this.toastyService.info(toastOptions); break;
+            case 'success': this.toastyService.success(toastOptions); break;
+            case 'wait': this.toastyService.wait(toastOptions); break;
+            case 'error': this.toastyService.error(toastOptions); break;
+            case 'warning': this.toastyService.warning(toastOptions); break;
+        }
+    }
+
+    newCountdownToast() {
+        this.button2 = this.button2 === 'ping' ? 'pong' : 'ping';
+
+        let interval = 1000;
+        let seconds = this.options.timeout / 1000;
+        let subscription: Subscription;
+
+        let toastOptions: ToastOptions = {
+            title: this.getTitle(seconds || 0),
+            msg: this.getMessage(seconds || 0),
+            showClose: this.options.showClose,
+            timeout: this.options.timeout,
+            theme: this.options.theme,
+            onAdd: (toast: ToastData) => {
+                console.log('Toast ' + toast.id + ' has been added!');
+                // Run the timer with 1 second iterval
+                let observable = Observable.interval(interval).take(seconds);
+                // Start listen seconds bit
+                subscription = observable.subscribe((count: number) => {
+                    // Update title
+                    toast.title = this.getTitle(seconds - count - 1 || 0);
+                    // Update message
+                    toast.msg = this.getMessage(seconds - count - 1 || 0);
+                });
+
+            },
+            onRemove: function(toast: ToastData) {
+                console.log('Toast ' + toast.id + ' has been removed!');
+                // Stop listenning
+                subscription.unsubscribe();
             }
         };
 
