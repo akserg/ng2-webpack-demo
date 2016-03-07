@@ -1,3 +1,6 @@
+// ng2-webpack-demo
+require('ts-node/register');
+
 exports.config = {
   baseUrl: 'http://localhost:3000/',
 
