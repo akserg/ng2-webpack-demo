@@ -1,5 +1,3 @@
-**Note: for support questions, please use one of these channels:** [Chat: AngularClass.slack](http://angularclass.com/member-join/) or [Twitter: @AngularClass](https://twitter.com/AngularClass)
-
 * **I'm submitting a ...**
 [ ] bug report
 [ ] feature request
@@ -13,8 +11,7 @@
 
 
 
-* **If the current behavior is a bug, please provide the steps to reproduce and if possible a minimal demo of the problem** via
-https://plnkr.co or similar (you can use this template as a starting point: http://plnkr.co/edit/tpl:AvJOMERrnz94ekVua0u5).
+* **If the current behavior is a bug, please provide the steps to reproduce and if possible a minimal demo of the problem** via https://plnkr.co or similar.
 
 
 
