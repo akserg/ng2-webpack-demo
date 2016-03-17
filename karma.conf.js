@@ -1,4 +1,4 @@
-//ng2-webpack-demo
+// @AngularClass
 
 module.exports = function(config) {
   var testWebpackConfig = require('./webpack.test.config.js');

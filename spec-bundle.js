@@ -1,4 +1,4 @@
-// ng2-webpack-demo
+// @AngularClass
 /*
  * When testing with webpack and ES6, we have to do some extra
  * things get testing to work right. Because we are gonna write test
@@ -9,10 +9,14 @@
  * all here! Crazy huh. So we need to do some setup
 */
 Error.stackTraceLimit = Infinity;
-require('phantomjs-polyfill');
-require('es6-promise');
-require('es6-shim');
-require('es7-reflect-metadata');
+// require('phantomjs-polyfill');
+// require('es6-promise');
+// require('es6-shim');
+// require('es7-reflect-metadata');
+
+
+// Prefer CoreJS over the polyfills above
+require('core-js');
 
 require('zone.js/dist/zone-microtask.js');
 require('zone.js/dist/long-stack-trace-zone.js');

@@ -1,4 +1,4 @@
-// ng2-webpack-demo
+// @AngularClass
 require('ts-node/register');
 
 exports.config = {
@@ -11,7 +11,7 @@ exports.config = {
   ],
   exclude: [],
 
-  framework: 'jasmine',
+  framework: 'jasmine2',
 
   allScriptsTimeout: 110000,
 
