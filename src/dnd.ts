@@ -136,6 +136,72 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 </div>
             </div>
         </div>
+
+        <h4>Simple sortable</h4>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        Favorite drinks
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group" dnd-sortable-container [sortableData]="listOne">
+                            <li *ngFor="#item of listOne; #i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        My prefences:<br/>
+                        <span *ngFor="#item of listOne; #i = index">{{i + 1}}) {{item}}<br/></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+  <h4>Multi list sortable</h4>
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="panel panel-warning">
+        <div class="panel-heading">
+          Available boxers
+        </div>
+        <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="listBoxers">
+          <ul class="list-group" >
+            <li *ngFor="#item of listBoxers; #i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          First Team
+        </div>
+        <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="listTeamOne">
+          <ul class="list-group" >
+            <li *ngFor="#item of listTeamOne; #i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          Second Team
+        </div>
+        <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="listTeamTwo">
+          <ul class="list-group">
+            <li *ngFor="#item of listTeamTwo; #i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
     </div>
 </div>`
 })
@@ -145,6 +211,12 @@ export class DndDemo {
 
     availableProducts: Array<Product> = [];
     shoppingBasket: Array<Product> = [];
+
+    listOne:Array<string> = ['Coffee','Orange Juice','Red Wine','Unhealty drink!','Water'];
+
+    listBoxers:Array<string> = ['Sugar Ray Robinson','Muhammad Ali','George Foreman','Joe Frazier','Jake LaMotta','Joe Louis','Jack Dempsey','Rocky Marciano','Mike Tyson','Oscar De La Hoya'];
+    listTeamOne:Array<string> = [];
+    listTeamTwo:Array<string> = [];
 
     constructor() {
         this.availableProducts.push(new Product("Blue Shoes", 3, 35));
