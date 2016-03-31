@@ -34,7 +34,7 @@ module.exports = {
   // Static data for index.html
   metadata: METADATA,
 
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'source-map', //cheap-module-eval-source-map',
   // cache: true,
   debug: true,
   // devtool: 'eval' // for faster builds use 'eval'
