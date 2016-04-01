@@ -502,7 +502,7 @@ webpackJsonp([2],[
 	            //
 	            if (event.dataTransfer != null) {
 	                event.dataTransfer.effectAllowed = _this._config.dragEffect.name;
-	                event.dataTransfer.setData('text/html', '');
+	                event.dataTransfer.setData('text', '');
 	                if (_this._config.dragImage != null) {
 	                    var dragImage = _this._config.dragImage;
 	                    event.dataTransfer.setDragImage(dragImage.imageElement, dragImage.x_offset, dragImage.y_offset);
@@ -12025,4 +12025,4 @@ webpackJsonp([2],[
 
 /***/ }
 ]);
-//# sourceMappingURL=boot.1fc11a8a003f8c49b196.bundle.map
+//# sourceMappingURL=boot.ae39410f91547af6d944.bundle.map
