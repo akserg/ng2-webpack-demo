@@ -1,6 +1,6 @@
 // Copyright (C) 2016 Sergey Akopkokhyants
 // This project is licensed under the terms of the MIT license.
-// https://github.com/akserg/ng2-demo
+// https://github.com/akserg
 
 'use strict';
 

@@ -1,6 +1,6 @@
 // Copyright (C) 2016 Sergey Akopkokhyants
 // This project is licensed under the terms of the MIT license.
-// https://github.com/akserg/ng2-demo
+// https://github.com/akserg
 
 'use strict';
 
@@ -17,6 +17,7 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
     <ul>
         <li><a [routerLink]="['Toasty']">Toasty</a></li>
         <li><a [routerLink]="['Dnd']">Drag-and-Drop</a></li>
+        <li><a [routerLink]="['Slim']">Slim Loading Bar</a></li>
     </ul>
 </div>`
 })
