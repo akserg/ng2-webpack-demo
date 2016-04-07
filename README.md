@@ -3,7 +3,9 @@
 > An Angular 2 starter kit featuring [Angular 2](https://angular.io) and [Webpack](http://webpack.github.io/)
 > 
 > This is a fork of [Angular2 Webpack Starter](https://github.com/AngularClass/angular2-webpack-starter) to demonstrate the use of different libraries.
-> .
+> 
+
+Online demo available [here](http://akserg.github.io/ng2-webpack-demo)
 
 ### Quick start
 > Clone/Download the repo then edit `app.ts` inside [`/src/app/app.ts`](/src/app/app.ts)
