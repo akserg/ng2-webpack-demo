@@ -47,7 +47,7 @@
     "core-js": "^2.1.5",
     "es6-promise": "~3.1.2",
     "es6-shim": "~0.35.0",
-    "ng2-dnd": "^1.4.0",
+    "ng2-dnd": "^1.4.1",
     "ng2-slim-loading-bar": "^1.1.0",
     "ng2-toasty": "^1.5.0",
     "reflect-metadata": "0.1.2",

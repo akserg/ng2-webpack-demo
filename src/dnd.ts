@@ -316,6 +316,7 @@ export class DndDemo {
     }
 
     addToBasket(newProduct: Product) {
+        console.log('addToBasket', newProduct);
         for (let indx in this.shoppingBasket) {
             let product: Product = this.shoppingBasket[indx];
             if (product.name === newProduct.name) {
@@ -336,6 +337,7 @@ export class DndDemo {
     }
 
     transferDataSuccess($event) {
+        console.log('transferDataSuccess', $event);
         this.receivedData.push($event);
     }
 }
