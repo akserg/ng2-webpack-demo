@@ -457,10 +457,11 @@ webpackJsonp([2],[
 	var dnd_config_1 = __webpack_require__(59);
 	var dnd_service_1 = __webpack_require__(74);
 	var AbstractComponent = (function () {
-	    function AbstractComponent(elemRef, _dragDropService, _config) {
+	    function AbstractComponent(elemRef, _dragDropService, _config, _cdr) {
 	        var _this = this;
 	        this._dragDropService = _dragDropService;
 	        this._config = _config;
+	        this._cdr = _cdr;
 	        /**
 	         * Whether the object is draggable. Default is true.
 	         */
@@ -484,6 +485,7 @@ webpackJsonp([2],[
 	            if (event.dataTransfer != null) {
 	                event.dataTransfer.dropEffect = _this._config.dropEffect.name;
 	            }
+	            return false;
 	        };
 	        this._elem.ondragleave = function (event) {
 	            _this._onDragLeave(event);
@@ -515,14 +517,14 @@ webpackJsonp([2],[
 	            // console.log('ondragend', event.target);
 	            _this._onDragEnd(event);
 	        };
-	        this._elem.ontouchstart = function (event) {
-	            // console.log('ontouchstart', event.target);
-	            _this._onDragStart(event);
-	        };
-	        this._elem.ontouchend = function (event) {
-	            // console.log('ontouchend', event.target);
-	            _this._onDragEnd(event);
-	        };
+	        // this._elem.ontouchstart = (event: Event) => {
+	        //     // console.log('ontouchstart', event.target);
+	        //     this._onDragStart(event);
+	        // };
+	        // this._elem.ontouchend = (event: Event) => {
+	        //     // console.log('ontouchend', event.target);
+	        //     this._onDragEnd(event);
+	        // };
 	    }
 	    Object.defineProperty(AbstractComponent.prototype, "dragEnabled", {
 	        get: function () {
@@ -539,33 +541,53 @@ webpackJsonp([2],[
 	        enumerable: true,
 	        configurable: true
 	    });
+	    /******* Change detection ******/
+	    AbstractComponent.prototype.detectChanges = function () {
+	        var _this = this;
+	        // Programmatically run change detection to fix issue in Safari
+	        setTimeout(function () {
+	            _this._cdr.detectChanges();
+	        }, 250);
+	    };
 	    //****** Droppable *******//
 	    AbstractComponent.prototype._onDragEnter = function (event) {
 	        // console.log('ondragenter._isDropAllowed', this._isDropAllowed);
 	        if (this._isDropAllowed) {
-	            event.preventDefault();
+	            // event.preventDefault();
 	            this._onDragEnterCallback(event);
 	        }
 	    };
 	    AbstractComponent.prototype._onDragOver = function (event) {
 	        // // console.log('ondragover._isDropAllowed', this._isDropAllowed);
 	        if (this._isDropAllowed) {
-	            event.preventDefault();
+	            // The element is over the same source element - do nothing
+	            if (event.preventDefault) {
+	                // Necessary. Allows us to drop.
+	                event.preventDefault();
+	            }
 	            this._onDragOverCallback(event);
 	        }
 	    };
 	    AbstractComponent.prototype._onDragLeave = function (event) {
 	        // console.log('ondragleave._isDropAllowed', this._isDropAllowed);
 	        if (this._isDropAllowed) {
-	            event.preventDefault();
+	            // event.preventDefault();
 	            this._onDragLeaveCallback(event);
 	        }
 	    };
 	    AbstractComponent.prototype._onDrop = function (event) {
 	        // console.log('ondrop._isDropAllowed', this._isDropAllowed);
 	        if (this._isDropAllowed) {
-	            event.preventDefault();
+	            if (event.preventDefault) {
+	                // Necessary. Allows us to drop.
+	                event.preventDefault();
+	            }
+	            if (event.stopPropagation) {
+	                // Necessary. Allows us to drop.
+	                event.stopPropagation();
+	            }
 	            this._onDropCallback(event);
+	            this.detectChanges();
 	        }
 	    };
 	    Object.defineProperty(AbstractComponent.prototype, "_isDropAllowed", {
@@ -610,7 +632,7 @@ webpackJsonp([2],[
 	    AbstractComponent.prototype._onDragEndCallback = function (event) { };
 	    AbstractComponent = __decorate([
 	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [core_2.ElementRef, dnd_service_1.DragDropService, dnd_config_1.DragDropConfig])
+	        __metadata('design:paramtypes', [core_2.ElementRef, dnd_service_1.DragDropService, dnd_config_1.DragDropConfig, core_1.ChangeDetectorRef])
 	    ], AbstractComponent);
 	    return AbstractComponent;
 	}());
@@ -2461,18 +2483,19 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
+	var core_2 = __webpack_require__(4);
 	var dnd_component_1 = __webpack_require__(111);
 	var dnd_config_1 = __webpack_require__(59);
 	var dnd_service_1 = __webpack_require__(74);
 	var DraggableComponent = (function (_super) {
 	    __extends(DraggableComponent, _super);
-	    function DraggableComponent(elemRef, _dragDropService, _config) {
-	        _super.call(this, elemRef, _dragDropService, _config);
+	    function DraggableComponent(elemRef, dragDropService, config, cdr) {
+	        _super.call(this, elemRef, dragDropService, config, cdr);
 	        /**
 	         * Callback function called when the drag action ends with a valid drop action.
 	         * It is activated after the on-drop-success callback
 	         */
-	        this.onDragSuccessCallback = new core_1.EventEmitter();
+	        this.onDragSuccessCallback = new core_2.EventEmitter();
 	        this._defaultCursor = this._elem.style.cursor;
 	        this.dragEnabled = true;
 	    }
@@ -2501,26 +2524,26 @@ webpackJsonp([2],[
 	        this._elem.classList.remove(this._config.onDragStartClass);
 	    };
 	    __decorate([
-	        core_1.Input("dragEnabled"), 
+	        core_2.Input("dragEnabled"), 
 	        __metadata('design:type', Boolean), 
 	        __metadata('design:paramtypes', [Boolean])
 	    ], DraggableComponent.prototype, "draggable", null);
 	    __decorate([
-	        core_1.Input(), 
+	        core_2.Input(), 
 	        __metadata('design:type', Object)
 	    ], DraggableComponent.prototype, "dragData", void 0);
 	    __decorate([
-	        core_1.Output("onDragSuccess"), 
-	        __metadata('design:type', core_1.EventEmitter)
+	        core_2.Output("onDragSuccess"), 
+	        __metadata('design:type', core_2.EventEmitter)
 	    ], DraggableComponent.prototype, "onDragSuccessCallback", void 0);
 	    __decorate([
-	        core_1.Input("dropZones"), 
+	        core_2.Input("dropZones"), 
 	        __metadata('design:type', Array), 
 	        __metadata('design:paramtypes', [Array])
 	    ], DraggableComponent.prototype, "dropzones", null);
 	    DraggableComponent = __decorate([
-	        core_1.Directive({ selector: '[dnd-draggable]' }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, dnd_service_1.DragDropService, dnd_config_1.DragDropConfig])
+	        core_2.Directive({ selector: '[dnd-draggable]' }), 
+	        __metadata('design:paramtypes', [core_2.ElementRef, dnd_service_1.DragDropService, dnd_config_1.DragDropConfig, core_1.ChangeDetectorRef])
 	    ], DraggableComponent);
 	    return DraggableComponent;
 	}(dnd_component_1.AbstractComponent));
@@ -2550,21 +2573,22 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
+	var core_2 = __webpack_require__(4);
 	var dnd_component_1 = __webpack_require__(111);
 	var dnd_config_1 = __webpack_require__(59);
 	var dnd_service_1 = __webpack_require__(74);
 	var DroppableComponent = (function (_super) {
 	    __extends(DroppableComponent, _super);
-	    function DroppableComponent(elemRef, _dragDropService, _config) {
-	        _super.call(this, elemRef, _dragDropService, _config);
+	    function DroppableComponent(elemRef, dragDropService, config, cdr) {
+	        _super.call(this, elemRef, dragDropService, config, cdr);
 	        /**
 	         * Callback function called when the drop action completes correctly.
 	         * It is activated before the on-drag-success callback.
 	         */
-	        this.onDropSuccessCallback = new core_1.EventEmitter();
-	        this.onDragEnterCallback = new core_1.EventEmitter();
-	        this.onDragOverCallback = new core_1.EventEmitter();
-	        this.onDragLeaveCallback = new core_1.EventEmitter();
+	        this.onDropSuccessCallback = new core_2.EventEmitter();
+	        this.onDragEnterCallback = new core_2.EventEmitter();
+	        this.onDragOverCallback = new core_2.EventEmitter();
+	        this.onDragLeaveCallback = new core_2.EventEmitter();
 	        this.dropEnabled = true;
 	    }
 	    Object.defineProperty(DroppableComponent.prototype, "droppable", {
@@ -2607,34 +2631,34 @@ webpackJsonp([2],[
 	        this._elem.classList.remove(this._config.onDragEnterClass);
 	    };
 	    __decorate([
-	        core_1.Input("dropEnabled"), 
+	        core_2.Input("dropEnabled"), 
 	        __metadata('design:type', Boolean), 
 	        __metadata('design:paramtypes', [Boolean])
 	    ], DroppableComponent.prototype, "droppable", null);
 	    __decorate([
-	        core_1.Output("onDropSuccess"), 
-	        __metadata('design:type', core_1.EventEmitter)
+	        core_2.Output("onDropSuccess"), 
+	        __metadata('design:type', core_2.EventEmitter)
 	    ], DroppableComponent.prototype, "onDropSuccessCallback", void 0);
 	    __decorate([
-	        core_1.Output("onDragEnter"), 
-	        __metadata('design:type', core_1.EventEmitter)
+	        core_2.Output("onDragEnter"), 
+	        __metadata('design:type', core_2.EventEmitter)
 	    ], DroppableComponent.prototype, "onDragEnterCallback", void 0);
 	    __decorate([
-	        core_1.Output("onDragOver"), 
-	        __metadata('design:type', core_1.EventEmitter)
+	        core_2.Output("onDragOver"), 
+	        __metadata('design:type', core_2.EventEmitter)
 	    ], DroppableComponent.prototype, "onDragOverCallback", void 0);
 	    __decorate([
-	        core_1.Output("onDragLeave"), 
-	        __metadata('design:type', core_1.EventEmitter)
+	        core_2.Output("onDragLeave"), 
+	        __metadata('design:type', core_2.EventEmitter)
 	    ], DroppableComponent.prototype, "onDragLeaveCallback", void 0);
 	    __decorate([
-	        core_1.Input("dropZones"), 
+	        core_2.Input("dropZones"), 
 	        __metadata('design:type', Array), 
 	        __metadata('design:paramtypes', [Array])
 	    ], DroppableComponent.prototype, "dropzones", null);
 	    DroppableComponent = __decorate([
-	        core_1.Directive({ selector: '[dnd-droppable]' }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, dnd_service_1.DragDropService, dnd_config_1.DragDropConfig])
+	        core_2.Directive({ selector: '[dnd-droppable]' }), 
+	        __metadata('design:paramtypes', [core_2.ElementRef, dnd_service_1.DragDropService, dnd_config_1.DragDropConfig, core_1.ChangeDetectorRef])
 	    ], DroppableComponent);
 	    return DroppableComponent;
 	}(dnd_component_1.AbstractComponent));
@@ -2664,13 +2688,14 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
+	var core_2 = __webpack_require__(4);
 	var dnd_component_1 = __webpack_require__(111);
 	var dnd_config_1 = __webpack_require__(59);
 	var dnd_service_1 = __webpack_require__(74);
 	var SortableContainer = (function (_super) {
 	    __extends(SortableContainer, _super);
-	    function SortableContainer(elemRef, _dragDropService, _config, _sortableDataService) {
-	        _super.call(this, elemRef, _dragDropService, _config);
+	    function SortableContainer(elemRef, dragDropService, config, cdr, _sortableDataService) {
+	        _super.call(this, elemRef, dragDropService, config, cdr);
 	        this._sortableDataService = _sortableDataService;
 	        this._sortableData = [];
 	        this.dragEnabled = false;
@@ -2715,44 +2740,46 @@ webpackJsonp([2],[
 	            this._sortableDataService.sortableData = this._sortableData;
 	            this._sortableDataService.index = 0;
 	        }
+	        // Refresh changes in properties of container component
+	        this.detectChanges();
 	    };
 	    __decorate([
-	        core_1.Input("dragEnabled"), 
+	        core_2.Input("dragEnabled"), 
 	        __metadata('design:type', Boolean), 
 	        __metadata('design:paramtypes', [Boolean])
 	    ], SortableContainer.prototype, "draggable", null);
 	    __decorate([
-	        core_1.Input(), 
+	        core_2.Input(), 
 	        __metadata('design:type', Array), 
 	        __metadata('design:paramtypes', [Array])
 	    ], SortableContainer.prototype, "sortableData", null);
 	    __decorate([
-	        core_1.Input("dropZones"), 
+	        core_2.Input("dropZones"), 
 	        __metadata('design:type', Array), 
 	        __metadata('design:paramtypes', [Array])
 	    ], SortableContainer.prototype, "dropzones", null);
 	    SortableContainer = __decorate([
-	        core_1.Directive({ selector: '[dnd-sortable-container]' }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, dnd_service_1.DragDropService, dnd_config_1.DragDropConfig, dnd_service_1.DragDropSortableService])
+	        core_2.Directive({ selector: '[dnd-sortable-container]' }), 
+	        __metadata('design:paramtypes', [core_2.ElementRef, dnd_service_1.DragDropService, dnd_config_1.DragDropConfig, core_1.ChangeDetectorRef, dnd_service_1.DragDropSortableService])
 	    ], SortableContainer);
 	    return SortableContainer;
 	}(dnd_component_1.AbstractComponent));
 	exports.SortableContainer = SortableContainer;
 	var SortableComponent = (function (_super) {
 	    __extends(SortableComponent, _super);
-	    function SortableComponent(elemRef, _dragDropService, _config, _sortableContainer, _sortableDataService) {
-	        _super.call(this, elemRef, _dragDropService, _config);
+	    function SortableComponent(elemRef, dragDropService, config, _sortableContainer, _sortableDataService, cdr) {
+	        _super.call(this, elemRef, dragDropService, config, cdr);
 	        this._sortableContainer = _sortableContainer;
 	        this._sortableDataService = _sortableDataService;
 	        /**
 	         * Callback function called when the drag action ends with a valid drop action.
 	         * It is activated after the on-drop-success callback
 	         */
-	        this.onDragSuccessCallback = new core_1.EventEmitter();
-	        this.onDragStartCallback = new core_1.EventEmitter();
-	        this.onDragOverCallback = new core_1.EventEmitter();
-	        this.onDragEndCallback = new core_1.EventEmitter();
-	        this.onDropSuccessCallback = new core_1.EventEmitter();
+	        this.onDragSuccessCallback = new core_2.EventEmitter();
+	        this.onDragStartCallback = new core_2.EventEmitter();
+	        this.onDragOverCallback = new core_2.EventEmitter();
+	        this.onDragEndCallback = new core_2.EventEmitter();
+	        this.onDropSuccessCallback = new core_2.EventEmitter();
 	        this.dropZones = this._sortableContainer.dropZones;
 	        this.dragEnabled = true;
 	        this.dropEnabled = true;
@@ -2824,48 +2851,50 @@ webpackJsonp([2],[
 	            // console.log('onDropCallback.onDragSuccessCallback.dragData', this._dragDropService.dragData);
 	            this._dragDropService.onDragSuccessCallback.emit(this._dragDropService.dragData);
 	        }
+	        // Refresh changes in properties of container component
+	        this._sortableContainer.detectChanges();
 	    };
 	    __decorate([
-	        core_1.Input('sortableIndex'), 
+	        core_2.Input('sortableIndex'), 
 	        __metadata('design:type', Number)
 	    ], SortableComponent.prototype, "index", void 0);
 	    __decorate([
-	        core_1.Input("dragEnabled"), 
+	        core_2.Input("dragEnabled"), 
 	        __metadata('design:type', Boolean), 
 	        __metadata('design:paramtypes', [Boolean])
 	    ], SortableComponent.prototype, "draggable", null);
 	    __decorate([
-	        core_1.Input("dropEnabled"), 
+	        core_2.Input("dropEnabled"), 
 	        __metadata('design:type', Boolean), 
 	        __metadata('design:paramtypes', [Boolean])
 	    ], SortableComponent.prototype, "droppable", null);
 	    __decorate([
-	        core_1.Input(), 
+	        core_2.Input(), 
 	        __metadata('design:type', Object)
 	    ], SortableComponent.prototype, "dragData", void 0);
 	    __decorate([
-	        core_1.Output("onDragSuccess"), 
-	        __metadata('design:type', core_1.EventEmitter)
+	        core_2.Output("onDragSuccess"), 
+	        __metadata('design:type', core_2.EventEmitter)
 	    ], SortableComponent.prototype, "onDragSuccessCallback", void 0);
 	    __decorate([
-	        core_1.Output("onDragStart"), 
-	        __metadata('design:type', core_1.EventEmitter)
+	        core_2.Output("onDragStart"), 
+	        __metadata('design:type', core_2.EventEmitter)
 	    ], SortableComponent.prototype, "onDragStartCallback", void 0);
 	    __decorate([
-	        core_1.Output("onDragOver"), 
-	        __metadata('design:type', core_1.EventEmitter)
+	        core_2.Output("onDragOver"), 
+	        __metadata('design:type', core_2.EventEmitter)
 	    ], SortableComponent.prototype, "onDragOverCallback", void 0);
 	    __decorate([
-	        core_1.Output("onDragEnd"), 
-	        __metadata('design:type', core_1.EventEmitter)
+	        core_2.Output("onDragEnd"), 
+	        __metadata('design:type', core_2.EventEmitter)
 	    ], SortableComponent.prototype, "onDragEndCallback", void 0);
 	    __decorate([
-	        core_1.Output("onDropSuccess"), 
-	        __metadata('design:type', core_1.EventEmitter)
+	        core_2.Output("onDropSuccess"), 
+	        __metadata('design:type', core_2.EventEmitter)
 	    ], SortableComponent.prototype, "onDropSuccessCallback", void 0);
 	    SortableComponent = __decorate([
-	        core_1.Directive({ selector: '[dnd-sortable]' }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, dnd_service_1.DragDropService, dnd_config_1.DragDropConfig, SortableContainer, dnd_service_1.DragDropSortableService])
+	        core_2.Directive({ selector: '[dnd-sortable]' }), 
+	        __metadata('design:paramtypes', [core_2.ElementRef, dnd_service_1.DragDropService, dnd_config_1.DragDropConfig, SortableContainer, dnd_service_1.DragDropSortableService, core_1.ChangeDetectorRef])
 	    ], SortableComponent);
 	    return SortableComponent;
 	}(dnd_component_1.AbstractComponent));
@@ -3965,6 +3994,7 @@ webpackJsonp([2],[
 	        orderedProduct.quantity--;
 	    };
 	    DndDemo.prototype.addToBasket = function (newProduct) {
+	        console.log('addToBasket', newProduct);
 	        for (var indx in this.shoppingBasket) {
 	            var product = this.shoppingBasket[indx];
 	            if (product.name === newProduct.name) {
@@ -3983,6 +4013,7 @@ webpackJsonp([2],[
 	        return cost;
 	    };
 	    DndDemo.prototype.transferDataSuccess = function ($event) {
+	        console.log('transferDataSuccess', $event);
 	        this.receivedData.push($event);
 	    };
 	    DndDemo = __decorate([
@@ -12424,4 +12455,4 @@ webpackJsonp([2],[
 
 /***/ }
 ]);
-//# sourceMappingURL=boot.948bc9e21391533ef061.bundle.map
+//# sourceMappingURL=boot.2df570342c1fb123bd89.bundle.map
