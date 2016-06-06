@@ -4,14 +4,19 @@
 // run `typings install x` where `x` is your module
 
 // Angular 2
-import 'angular2/platform/browser';
-import 'angular2/core';
-import 'angular2/http';
-import 'angular2/router';
+import '@angular/platform-browser';
+import '@angular/platform-browser-dynamic';
+import '@angular/core';
+import '@angular/common';
+import '@angular/http';
+import '@angular/router-deprecated';
 
 // RxJS
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
+
+// Add iOS shim for HTML 5 drag'n'drop: https://github.com/timruffles/ios-html5-drag-drop-shim
+//import 'drag-drop-webkit-mobile/ios-drag-drop';
 
 if ('production' === ENV) {
   // Production
@@ -21,4 +26,3 @@ if ('production' === ENV) {
   // Development
 
 }
-

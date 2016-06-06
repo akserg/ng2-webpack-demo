@@ -4,8 +4,8 @@
 
 'use strict';
 
-import {Component, Injectable} from 'angular2/core';
-import {COMMON_DIRECTIVES} from 'angular2/common';
+import {Component, Injectable} from '@angular/core';
+import {COMMON_DIRECTIVES} from '@angular/common';
 
 import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
 
@@ -30,9 +30,10 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 </div>
             </div>
             <div class="col-sm-3">
-                <div dnd-droppable class="panel panel-info">
+                <div dnd-droppable class="panel panel-info" (onDropSuccess)="simpleDrop=$event">
                     <div class="panel-heading">Place to drop</div>
                     <div class="panel-body">
+                    	<div *ngIf="simpleDrop">Item was dropped here</div>
                     </div>
                 </div>
             </div>
@@ -66,16 +67,18 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 </div>
             </div>
             <div class="col-sm-3">
-                <div dnd-droppable class="panel panel-info" [dropZones]="['zone1']">
+                <div dnd-droppable class="panel panel-info" [dropZones]="['zone1']" (onDropSuccess)="restrictedDrop1=$event">
                     <div class="panel-heading">Zone 1</div>
                     <div class="panel-body">
+                      <div *ngIf="restrictedDrop1">Item was dropped here</div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-3">
-                <div dnd-droppable class="panel panel-warning" [dropZones]="['zone2']">
+                <div dnd-droppable class="panel panel-warning" [dropZones]="['zone2']" (onDropSuccess)="restrictedDrop2=$event">
                     <div class="panel-heading">Zone 2</div>
                     <div class="panel-body">
+                      <div *ngIf="restrictedDrop2">Item was dropped here</div>
                     </div>
                 </div>
             </div>
@@ -100,7 +103,7 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 <div dnd-droppable class="panel panel-info" (onDropSuccess)="transferDataSuccess($event)">
                     <div class="panel-heading">Place to drop (Items:{{receivedData.length}})</div>
                     <div class="panel-body">
-                        <div [hidden]="!receivedData.length > 0" *ngFor="#data of receivedData">{{data | json}}</div>
+                        <div [hidden]="!receivedData.length > 0" *ngFor="let data of receivedData">{{data | json}}</div>
                     </div>
                 </div>
             </div>
@@ -113,7 +116,7 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 <div class="panel panel-success">
                     <div class="panel-heading">Available products</div>
                     <div class="panel-body">
-                        <div *ngFor="#product of availableProducts" class="panel panel-default"
+                        <div *ngFor="let product of availableProducts" class="panel panel-default"
                             dnd-draggable [dragEnabled]="product.quantity>0" [dragData]="product" (onDragSuccess)="orderedProduct($event)" [dropZones]="['demo1']">
                             <div class="panel-body">
                                 <div [hidden]="product.quantity===0">{{product.name}} - \${{product.cost}}<br>(available: {{product.quantity}})</div>
@@ -127,7 +130,7 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 <div dnd-droppable (onDropSuccess)="addToBasket($event)" [dropZones]="['demo1']" class="panel panel-info">
                     <div class="panel-heading">Shopping Basket<br>(to pay: \${{totalCost()}})</div>
                     <div class="panel-body">
-                        <div *ngFor="#product of shoppingBasket" class="panel panel-default">
+                        <div *ngFor="let product of shoppingBasket" class="panel panel-default">
                             <div class="panel-body">
                             {{product.name}}<br>(ordered: {{product.quantity}}<br>cost: \${{product.cost * product.quantity}})
                             </div>
@@ -136,6 +139,62 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 </div>
             </div>
         </div>
+
+        <h4>Use a custom function to determine where dropping is allowed</h4>
+<div class="row">
+    <div class="col-sm-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">Available to drag</div>
+            <div class="panel-body">
+                <div class="panel panel-default" dnd-draggable [dragData]="6">
+                    <div class="panel-body">dragData = 6</div>
+                </div>
+                <div class="panel panel-default" dnd-draggable [dragData]="10">
+                    <div class="panel-body">dragData = 10</div>
+                </div>
+                <div class="panel panel-default" dnd-draggable [dragData]="30">
+                    <div class="panel-body">dragData = 30</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <pre>allowDropFunction(baseInteger) {
+    return (dragData) => dragData % baseInteger === 0;
+}</pre>
+        <div class="row">
+            <div class="col-sm-6">
+                <div dnd-droppable class="panel panel-info" [allowDrop]="allowDropFunction(box1Integer)">
+                    <div class="panel-heading">
+                        Multiples of
+                        <input type="number" [(ngModel)]="box1Integer" style="width: 4em">
+                        only
+                    </div>
+                    <div class="panel-body">
+                        <div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div dnd-droppable class="panel panel-warning" [allowDrop]="allowDropFunction(box2Integer)">
+                    <div class="panel-heading">
+                        Multiples of
+                        <input type="number" [(ngModel)]="box2Integer" style="width: 4em">
+                        only
+                    </div>
+                    <div class="panel-body">
+                        <div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <hr>
 
         <h4>Simple sortable</h4>
         <div class="row">
@@ -146,7 +205,7 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                     </div>
                     <div class="panel-body">
                         <ul class="list-group" dnd-sortable-container [sortableData]="listOne">
-                            <li *ngFor="#item of listOne; #i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
+                            <li *ngFor="let item of listOne; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
                         </ul>
                     </div>
                 </div>
@@ -155,7 +214,7 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 <div class="panel panel-default">
                     <div class="panel-body">
                         My prefences:<br/>
-                        <span *ngFor="#item of listOne; #i = index">{{i + 1}}) {{item}}<br/></span>
+                        <span *ngFor="let item of listOne; let i = index">{{i + 1}}) {{item}}<br/></span>
                     </div>
                 </div>
             </div>
@@ -170,7 +229,7 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 </div>
                 <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="listBoxers">
                 <ul class="list-group" >
-                    <li *ngFor="#item of listBoxers; #i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
+                    <li *ngFor="let item of listBoxers; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
                 </ul>
                 </div>
             </div>
@@ -182,7 +241,7 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 </div>
                 <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="listTeamOne">
                 <ul class="list-group" >
-                    <li *ngFor="#item of listTeamOne; #i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
+                    <li *ngFor="let item of listTeamOne; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
                 </ul>
                 </div>
             </div>
@@ -194,7 +253,7 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 </div>
                 <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="listTeamTwo">
                 <ul class="list-group">
-                    <li *ngFor="#item of listTeamTwo; #i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
+                    <li *ngFor="let item of listTeamTwo; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
                 </ul>
                 </div>
             </div>
@@ -210,7 +269,7 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                     </div>
                     <div class="panel-body">
                         <ul class="list-group" dnd-sortable-container [sortableData]="listTwo" [dropZones]="['delete-dropZone']">
-                            <li *ngFor="#item of listTwo; #i = index" class="list-group-item"
+                            <li *ngFor="let item of listTwo; let i = index" class="list-group-item"
                             dnd-sortable [sortableIndex]="i">{{item}}</li>
                         </ul>
                     </div>
@@ -237,7 +296,7 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 Drag Containers <input type="checkbox" [(ngModel)]="dragOperation"/>
                 <div dnd-sortable-container [sortableData]="containers" [dropZones]="['container-dropZone']">
                     <div class="col-sm3"
-                            *ngFor="#container of containers; #i = index"
+                            *ngFor="let container of containers; let i = index"
                             dnd-sortable [sortableIndex]="i" [dragEnabled]="dragOperation">
                         <div class="panel panel-warning"
                             dnd-sortable-container [sortableData]="container.widgets" [dropZones]="['widget-dropZone']">
@@ -246,7 +305,7 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                             </div>
                             <div class="panel-body">
                                 <ul class="list-group">
-                                    <li *ngFor="#widget of container.widgets; #x = index" class="list-group-item"
+                                    <li *ngFor="let widget of container.widgets; let x = index" class="list-group-item"
                                         dnd-sortable [sortableIndex]="x" [dragEnabled]="!dragOperation"
                                         [dragData]="widget">{{widget.name}}</li>
                                 </ul>
@@ -259,7 +318,7 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
                 <div class="panel panel-info">
                     <div class="panel-heading">Widgets</div>
                     <div class="panel-body" dnd-droppable (onDropSuccess)="addTo($event)" [dropZones]="['widget-dropZone']">
-                        <div *ngFor="#widget of widgets" class="panel panel-default">
+                        <div *ngFor="let widget of widgets" class="panel panel-default">
                             <div class="panel-body">
                                 {{widget.name}}
                             </div>
@@ -273,12 +332,19 @@ import {DND_DIRECTIVES} from 'ng2-dnd/ng2-dnd';
     </div>
 </div>`
 })
-export class DndDemo {
+export class DndComponent {
+    simpleDrop: any = null;
+    restrictedDrop1: any = null;
+    restrictedDrop2: any = null;
+
     transferData: Object = {id: 1, msg: 'Hello'};
     receivedData: Array<any> = [];
 
     availableProducts: Array<Product> = [];
     shoppingBasket: Array<Product> = [];
+
+    box1Integer: number = 3;
+    box2Integer: number = 10;
 
     listOne: Array<string> = ['Coffee', 'Orange Juice', 'Red Wine', 'Unhealty drink!', 'Water'];
 
@@ -300,7 +366,7 @@ export class DndDemo {
     widgets: Array<Widget> = [];
     addTo($event) {
         if ($event) {
-            this.widgets.push($event);
+            this.widgets.push($event.dragData);
         }
     }
 
@@ -311,12 +377,14 @@ export class DndDemo {
         this.availableProducts.push(new Product('Blue Jeans', 4, 60));
     }
 
-    orderedProduct(orderedProduct: Product) {
+    orderedProduct($event) {
+    	let orderedProduct: Product = $event.dragData;
         orderedProduct.quantity--;
     }
 
-    addToBasket(newProduct: Product) {
-        console.log('addToBasket', newProduct);
+    addToBasket($event) {
+    	let newProduct: Product = $event.dragData;
+
         for (let indx in this.shoppingBasket) {
             let product: Product = this.shoppingBasket[indx];
             if (product.name === newProduct.name) {
@@ -337,8 +405,11 @@ export class DndDemo {
     }
 
     transferDataSuccess($event) {
-        console.log('transferDataSuccess', $event);
-        this.receivedData.push($event);
+        this.receivedData.push($event.dragData);
+    }
+
+    allowDropFunction(baseInteger) {
+        return (dragData) => dragData % baseInteger === 0;
     }
 }
 

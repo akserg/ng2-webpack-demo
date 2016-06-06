@@ -4,19 +4,19 @@
 
 'use strict';
 
-import {Component} from 'angular2/core';
-import {RouteConfig, Router, ROUTER_DIRECTIVES} from 'angular2/router';
+import {Component} from '@angular/core';
+import {RouteConfig, Router, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 
 import {Toasty} from 'ng2-toasty/ng2-toasty';
 import {SlimLoadingBar, SlimLoadingBarService} from 'ng2-slim-loading-bar/ng2-slim-loading-bar';
 
-import {HomeDemo} from './home';
-import {ToastDemo} from './toast';
-import {DndDemo} from './dnd';
-import {SlimDemo} from './slim';
+import {HomeComponent} from './home.component';
+import {ToastComponent} from './toast.component';
+import {DndComponent} from './dnd.component';
+import {SlimComponent} from './slim.component';
 
 @Component({
-    selector: 'hello-app',
+    selector: 'app',
     directives: [ROUTER_DIRECTIVES, Toasty, SlimLoadingBar],
     template:
     `
@@ -33,7 +33,6 @@ import {SlimDemo} from './slim';
     </div>
 </header>
 
-
 <div>
     <router-outlet></router-outlet>
     <ng2-toasty></ng2-toasty>
@@ -42,12 +41,12 @@ import {SlimDemo} from './slim';
 `
 })
 @RouteConfig([
-  {path: '/',        name: 'Root',       component: HomeDemo},
-  {path: '/toasty',  name: 'Toasty',     component: ToastDemo},
-  {path: '/dnd',     name: 'Dnd',        component: DndDemo},
-  {path: '/slim',    name: 'Slim',       component: SlimDemo}
+  {path: '/',        name: 'Root',       component: HomeComponent},
+  {path: '/toasty',  name: 'Toasty',     component: ToastComponent},
+  {path: '/dnd',     name: 'Dnd',        component: DndComponent},
+  {path: '/slim',    name: 'Slim',       component: SlimComponent}
 ])
-export class HelloApp {
+export class App {
     constructor(private slimLoader: SlimLoadingBarService, private router: Router) {
         this.runSlimLoader();
         this.router.subscribe((value: any) => {

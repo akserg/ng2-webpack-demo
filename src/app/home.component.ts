@@ -4,11 +4,11 @@
 
 'use strict';
 
-import {Component, Injectable} from 'angular2/core';
-import {ROUTER_DIRECTIVES} from 'angular2/router';
+import {Component, Injectable} from '@angular/core';
+import {ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 
 @Component({
-    selector: 'home-demo',
+    selector: 'home',
     directives: [ROUTER_DIRECTIVES],
     template: `
 <div class="container">
@@ -21,4 +21,4 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
     </ul>
 </div>`
 })
-export class HomeDemo { }
+export class HomeComponent { }

@@ -4,25 +4,24 @@
     "module": "commonjs",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "noEmitHelpers": true
   },
   "exclude": [
-    "node_modules",
-    "typings/main.d.ts",
-    "typings/main"
+    "./node_modules",
+    "./typings/main.d.ts",
+    "./typings/main"
   ],
   "filesGlob": [
-    "./src/**/*.ts",
-    "./test/**/*.ts",
-    "!./node_modules/**/*.ts",
-    "src/custom-typings.d.ts",
-    "typings/browser.d.ts"
+    "./src/app/**/*.ts",
+    "./src/platform/**/*.ts",
+    "!./node_modules/**",
+    "./src/custom-typings.d.ts",
+    "./typings/index.d.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
-    "useCache": true,
     "resolveGlobs": true,
-    "forkChecker": true,
-    "cacheDirectory": "node_modules/.awesome-typescript-loader-cache"
+    "forkChecker": true
   },
   "compileOnSave": false,
   "buildOnSave": false,

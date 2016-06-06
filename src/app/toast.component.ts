@@ -4,15 +4,15 @@
 
 'use strict';
 
-import {Component} from 'angular2/core';
-import {FORM_DIRECTIVES} from 'angular2/common';
+import {Component} from '@angular/core';
+import {FORM_DIRECTIVES} from '@angular/common';
 
 import {Subject, Observable, Subscription} from 'rxjs/Rx';
 
 import {ToastyService, ToastyConfig, Toasty, ToastOptions, ToastData} from 'ng2-toasty/ng2-toasty';
 
 @Component({
-    selector: 'toast-demo',
+    selector: 'toast',
     directives: [FORM_DIRECTIVES],
     template: `
 <div class="container">
@@ -28,12 +28,12 @@ import {ToastyService, ToastyConfig, Toasty, ToastOptions, ToastData} from 'ng2-
 
                 <label for="theme">Theme</label>
                 <select class="u-full-width" [(ngModel)]="options.theme" ngControl="theme" #theme="ngForm" >
-                  <option *ngFor="#theme of themes" [value]="theme.code">{{theme.name}}</option>
+                  <option *ngFor="let theme of themes" [value]="theme.code">{{theme.name}}</option>
                 </select>
 
                 <label for="theme">Type</label>
                 <select class="u-full-width" [(ngModel)]="options.type" ngControl="type" #type="ngForm" >
-                  <option *ngFor="#type of types" [value]="type.code">{{type.name}}</option>
+                  <option *ngFor="let type of types" [value]="type.code">{{type.name}}</option>
                 </select>
 
                 <label for="timeout">Timeout</label>
@@ -64,7 +64,7 @@ import {ToastyService, ToastyConfig, Toasty, ToastOptions, ToastData} from 'ng2-
     </form>
 </div>`
 })
-export class ToastDemo {
+export class ToastComponent {
 
     themes = [{
         name: 'Default Theme',
