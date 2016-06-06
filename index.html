@@ -9,58 +9,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Angular2 Webpack Demo">
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <link rel="stylesheet" href="skeleton.css">
-  <style>
-        body {
-            padding: 0;
-            margin: 0;
-        }
-        header {
-            border-bottom: 1px solid #eee;
-            height: 6.5rem;
-        }
-        .navbar-list {
-            list-style: none;
-            margin-bottom: 0;
-        }
-        .navbar-item {
-            margin-bottom: 0;
-            position: relative;
-        }
-        .navbar-link {
-            text-transform: uppercase;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: .2rem;
-            margin-right: 35px;
-            text-decoration: none;
-            line-height: 6.5rem;
-            color: #222;
-        }
-        small {
-            font-size: 6px;
-            opacity: .2;
-        }
-        code {
-            word-break: break-word;
-        }
-        @media (max-width: 400px) {
-            header {
-                display: none;
-            }
-        }
-  </style>
   <!-- base url -->
-  <base href="/ng2-webpack-demo/">
+  <base href="/">
 
 </head>
 
 <body>
 
-  <hello-app>
+  <app>
     Loading...
-  </hello-app>
+  </app>
 
   <!-- Google Analytics: change UA-71073175-1 to be your site's ID -->
   <script>
@@ -73,7 +31,12 @@
     ga('send', 'pageview');
   </script>
 
+  <script>
+    var iosDragDropShim = { enableEnterLeave: true };
+  </script>
+
+  
   
 
-<script src="polyfills.b4921db2673cfe966186.bundle.js"></script><script src="vendor.9e4228510066351b2866.bundle.js"></script><script src="boot.3a10a9cadcabf5567c3f.bundle.js"></script></body>
+<script type="text/javascript" src="polyfills.0a5fa375cda8df736015.bundle.js"></script><script type="text/javascript" src="vendor.24c8e599df17ead8649b.bundle.js"></script><script type="text/javascript" src="main.29ec7a62d52692452ea2.bundle.js"></script></body>
 </html>
