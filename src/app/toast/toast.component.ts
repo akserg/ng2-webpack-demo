@@ -2,56 +2,63 @@
 // This project is licensed under the terms of the MIT license.
 // https://github.com/akserg
 
-'use strict';
-
-import {Component} from '@angular/core';
-import {FORM_DIRECTIVES} from '@angular/common';
+import { Component } from '@angular/core';
 
 import {Subject, Observable, Subscription} from 'rxjs/Rx';
 
-import {ToastyService, ToastyConfig, Toasty, ToastOptions, ToastData} from 'ng2-toasty/ng2-toasty';
+import {ToastyService, ToastyConfig, ToastOptions, ToastData} from 'ng2-toasty';
+
+import {ToastCommunicationService} from './toast-communication.service';
 
 @Component({
-    selector: 'toast',
-    directives: [FORM_DIRECTIVES],
+    selector: 'demo-toast',
     template: `
 <div class="container">
     <br />
-    <form #heroForm="ngForm">
+    <form>
         <div class="row">
              <div class="four columns">
                 <label for="title">Title</label>
-                <input class="u-full-width" type="text" id="title" [(ngModel)]="options.title" ngControl="title" #title="ngForm">
+                <input class="u-full-width" type="text" id="title" [(ngModel)]="options.title" name="title">
 
                 <label for="msg">Message</label>
-                <input class="u-full-width" type="text" id="msg" [(ngModel)]="options.msg" ngControl="msg" #msg="ngForm">
+                <input class="u-full-width" type="text" id="msg" [(ngModel)]="options.msg" name="msg">
 
                 <label for="theme">Theme</label>
-                <select class="u-full-width" [(ngModel)]="options.theme" ngControl="theme" #theme="ngForm" >
+                <select class="u-full-width" [(ngModel)]="options.theme" name="theme">
                   <option *ngFor="let theme of themes" [value]="theme.code">{{theme.name}}</option>
                 </select>
 
                 <label for="theme">Type</label>
-                <select class="u-full-width" [(ngModel)]="options.type" ngControl="type" #type="ngForm" >
+                <select class="u-full-width" [(ngModel)]="options.type" name="type">
                   <option *ngFor="let type of types" [value]="type.code">{{type.name}}</option>
                 </select>
 
+                <label for="theme">Position</label>
+                <select class="u-full-width" [ngModel]="position" (ngModelChange)="changePosition($event)" name="position">
+                  <option *ngFor="let pos of positions" [value]="pos.code">{{pos.name}}</option>
+                </select>
+
                 <label for="timeout">Timeout</label>
-                <input type="text" class="u-full-width" id="timeout" [(ngModel)]="options.timeout" placeholder="5000" ngControl="timeout" #timeout="ngForm"/>
+                <input type="text" class="u-full-width" id="timeout" [(ngModel)]="options.timeout" placeholder="5000" name="timeout"/>
              </div>
              <div class="four columns">
                 <label for="showclose">Show Close Icon</label>
-                <input type="checkbox" id="showclose" [(ngModel)]="options.showClose" ngControl="showClose" #showClose="ngForm"/>
+                <input type="checkbox" id="showclose" [(ngModel)]="options.showClose" name="showClose"/>
             </div>
             <div class="four columns">
                 <pre>
-<code>toastyService<span ng-if="options.type != 'default'">.{{ options.type }}</span>({
+<code>toastyService<span ng-if="options.type != 'default'">.{{ options.type }}</span>({{ '{' }}
     title: "{{ options.title }}",
     msg: "{{ options.msg }}",
     showClose: {{ options.showClose }},
     timeout: {{ options.timeout || false }},
     theme: "{{ options.theme }}"
-});
+{{ '}' }});
+</code>
+<code>toastyConfig({{ '{' }}
+    position: "{{ position }}"
+{{ '}' }});
 </code>
                 </pre>
             </div>
@@ -81,21 +88,46 @@ export class ToastComponent {
         name: 'Default',
         code: 'default',
     }, {
-            name: 'Info',
-            code: 'info'
-        }, {
-            name: 'Success',
-            code: 'success'
-        }, {
-            name: 'Wait',
-            code: 'wait'
-        }, {
-            name: 'Error',
-            code: 'error'
-        }, {
-            name: 'Warning',
-            code: 'warning'
-        }];
+        name: 'Info',
+        code: 'info'
+    }, {
+        name: 'Success',
+        code: 'success'
+    }, {
+        name: 'Wait',
+        code: 'wait'
+    }, {
+        name: 'Error',
+        code: 'error'
+    }, {
+        name: 'Warning',
+        code: 'warning'
+    }];
+
+    positions = [{
+        name: 'Top Left',
+        code: 'top-left',
+    }, {
+        name: 'Top Center',
+        code: 'top-center',
+    }, {
+        name: 'Top Right',
+        code: 'top-right',
+    }, {
+        name: 'Bottom Left',
+        code: 'bottom-left',
+    }, {
+        name: 'Bottom Center',
+        code: 'bottom-center',
+    }, {
+        name: 'Bottom Right',
+        code: 'bottom-right',
+    }, {
+        name: 'Center Center',
+        code: 'center-center',
+    }];
+
+    position: string = this.positions[5].code;
 
     options = {
         title: 'Toast It!',
@@ -114,7 +146,7 @@ export class ToastComponent {
         return 'Seconds left: ' + num;
     }
 
-    constructor(private toastyService: ToastyService) { }
+    constructor(private toastyService: ToastyService, private toastCommunicationService: ToastCommunicationService) { }
 
     newToast() {
         let toastOptions: ToastOptions = {
@@ -123,6 +155,7 @@ export class ToastComponent {
             showClose: this.options.showClose,
             timeout: this.options.timeout,
             theme: this.options.theme,
+            // position: this.options.position,
             onAdd: (toast: ToastData) => {
                 console.log('Toast ' + toast.id + ' has been added!');
             },
@@ -184,6 +217,12 @@ export class ToastComponent {
 
     clearToasties() {
         this.toastyService.clearAll();
+    }
+
+    changePosition($event) {
+        this.position = $event;
+        // Update position of the Toasty Component
+        this.toastCommunicationService.setPosition(this.position);
     }
 
 }

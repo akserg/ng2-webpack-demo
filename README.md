@@ -1,107 +1,41 @@
-# ng2-webpack-demo
+# Ng2WebpackDemo
 
 > An Angular 2 starter kit featuring [Angular 2](https://angular.io) and [Webpack](http://webpack.github.io/)
 > 
-> This is a fork of [Angular2 Webpack Starter](https://github.com/AngularClass/angular2-webpack-starter) to demonstrate the use of different libraries.
-> 
+> This project was generated with [angular-cli](https://github.com/angular/angular-cli) to demonstrate the use of different libraries such:
+> - [ng2-dnd](https://github.com/akserg/ng2-dnd): Angular 2 Drag-and-Drop without dependencies
+> - [ng2-toasty](https://github.com/akserg/ng2-toasty): Angular2 Toasty component shows growl-style alerts and messages for your application
+> - [ng2-slim-loading-bar](https://github.com/akserg/ng2-slim-loading-bar): Angular 2 component shows slim loading bar at the top of the page
 
 Online demo available [here](http://akserg.github.io/ng2-webpack-demo)
 
-### Quick start
-> Clone/Download the repo then edit `app.ts` inside [`/src/app/app.ts`](/src/app/app.ts)
+## Development server
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-```bash
-# clone our repo
-# --depth 1 removes all but one .git commit history
-git clone --depth 1 https://github.com/akserg/ng2-webpack-demo.git
+## Code scaffolding
 
-# change directory to our repo
-cd ng2-webpack-demo
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class`.
 
-# install the repo with npm
-npm install
+## Build
 
-# start the server
-npm start
-```
-go to [http://0.0.0.0:3000](http://0.0.0.0:3000) or [http://localhost:3000](http://localhost:3000) in your browser
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-# Getting Started
-## Dependencies
-What you need to run this app:
-* `node` and `npm` (`brew install node`)
-* Ensure you're running the latest versions Node `v4.1.x`+ and NPM `2.14.x`+
+## Running unit tests
 
-Once you have those, you should install these globals with `npm install --global`:
-* `webpack` (`npm install --global webpack`)
-* `webpack-dev-server` (`npm install --global webpack-dev-server`)
-* `karma` (`npm install --global karma-cli`)
-* `protractor` (`npm install --global protractor`)
-* `typings` (`npm install --global typings`)
-* `typescript` (`npm install --global typescript`)
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Installing
-* `fork` this repo
-* `clone` your fork
-* `npm install` to install all dependencies
-* `typings install` to install necessary typings
-* `npm run server` to start the dev server in another tab
+## Running end-to-end tests
 
-## Running the app
-After you have installed all dependencies you can now run the app. Run `npm run server` to start a local server using `webpack-dev-server` which will watch, build (in-memory), and reload for you. The port will be displayed to you as `http://0.0.0.0:3000` (or if you prefer IPv6, if you're using `express` server, then it's `http://[::1]:3000/`).
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/). 
+Before running the tests make sure you are serving the app via `ng serve`.
 
-### server
-```bash
-# development
-npm run server
-# production
-npm run build:prod
-npm run server:prod
-```
+## Deploying to Github Pages
 
-## Other commands
+Run `ng github-pages:deploy` to deploy to Github Pages.
 
-### build files
-```bash
-# development
-npm run build:dev
-# production
-npm run build:prod
-```
+## Further help
 
-### watch and build files
-```bash
-npm run watch
-```
-
-### run tests
-```bash
-npm run test
-```
-
-### watch and run our tests
-```bash
-npm run watch:test
-```
-
-### run end-to-end tests
-```bash
-# make sure you have your server running in another terminal
-npm run e2e
-```
-
-### run webdriver (for end-to-end)
-```bash
-npm run webdriver:update
-npm run webdriver:start
-```
-
-### run Protractor's elementExplorer (for end-to-end)
-```bash
-npm run webdriver:start
-# in another terminal
-npm run e2e:live
-```
+To get more help on the `angular-cli` use `ng --help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 # License
  [MIT](/LICENSE)
