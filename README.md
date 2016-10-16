@@ -1,4 +1,4 @@
-# Ng2WebpackDemo
+# ng2-webpack-demo
 
 > An Angular 2 starter kit featuring [Angular 2](https://angular.io) and [Webpack](http://webpack.github.io/)
 > 
