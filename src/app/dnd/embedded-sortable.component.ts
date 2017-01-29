@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 @Component({
     selector: 'embedded-sortable',
     template: `
-<h4>Simple sortable With Drop into something, without delete it</h4>
+<h4>Move items between multi list sortable containers</h4>
 <div class="row">
     <div class="col-sm-3">
         Drag Containers <input type="checkbox" [(ngModel)]="dragOperation"/>

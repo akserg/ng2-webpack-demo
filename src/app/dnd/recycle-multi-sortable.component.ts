@@ -22,9 +22,6 @@ import {Component} from '@angular/core';
         <div class="panel panel-default">
             <div class="panel-body" dnd-sortable-container [dropZones]="['delete-dropZone']" [sortableData]="listRecycled">
                 Recycle bin: Drag into me to delete it<br/>
-                <!--ul class="list-group" >
-                    <li *ngFor="let item of listRecycled; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
-                </ul-->
             </div>
         </div>
         <div *ngIf="listRecycled.length">
