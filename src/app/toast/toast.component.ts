@@ -41,6 +41,11 @@ import {ToastCommunicationService} from './toast-communication.service';
 
                 <label for="timeout">Timeout</label>
                 <input type="text" class="u-full-width" id="timeout" [(ngModel)]="options.timeout" placeholder="5000" name="timeout"/>
+                
+                <label for="theme">Animate</label>
+                <select class="u-full-width" [(ngModel)]="options.animate" name="animate">
+                  <option *ngFor="let animate of animates" [value]="animate.code">{{animate.name}}</option>
+                </select>
              </div>
              <div class="four columns">
                 <label for="showclose">Show Close Icon</label>
@@ -53,7 +58,8 @@ import {ToastCommunicationService} from './toast-communication.service';
     msg: "{{ options.msg }}",
     showClose: {{ options.showClose }},
     timeout: {{ options.timeout || false }},
-    theme: "{{ options.theme }}"
+    theme: "{{ options.theme }}",
+    animate: "{{ options.animate }}"
 {{ '}' }});
 </code>
 <code>toastyConfig({{ '{' }}
@@ -82,6 +88,23 @@ export class ToastComponent {
     }, {
         name: 'Bootstrap 3',
         code: 'bootstrap'
+    }];
+
+    animates = [{
+      name: 'From Right',
+      code: 'fromRight'
+    }, {
+      name: 'From Left',
+      code: 'fromLeft'
+    }, {
+      name: 'Scale',
+      code: 'scale'
+    }, {
+      name: 'Rotate',
+      code: 'rotate'
+    }, {
+      name: 'None',
+      code: 'none'
     }];
 
     types = [{
@@ -135,7 +158,8 @@ export class ToastComponent {
         showClose: true,
         timeout: 5000,
         theme: this.themes[0].code,
-        type: this.types[0].code
+        type: this.types[0].code,
+        animate: this.animates[0].code
     };
 
     getTitle(num: number): string {
@@ -155,6 +179,7 @@ export class ToastComponent {
             showClose: this.options.showClose,
             timeout: this.options.timeout,
             theme: this.options.theme,
+            animate: this.options.animate,
             // position: this.options.position,
             onAdd: (toast: ToastData) => {
                 console.log('Toast ' + toast.id + ' has been added!');
