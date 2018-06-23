@@ -19,9 +19,11 @@ import { MultiSortableComponent } from './multi-sortable.component';
 import { RecycleMultiSortableComponent } from './recycle-multi-sortable.component';
 import { EmbeddedSortableComponent} from './embedded-sortable.component';
 import { SimpleSortableCopyComponent } from './simple-sortable-copy.component';
+import { SimpleSortableCopyDragComponent } from './simple-sortable-copy-drag.component';
+
 
 const dndComponents = [SimpleDndComponent, ZoneDndComponent, CustomDataDndComponent, CustomFunctionDndComponent, ShoppingBasketDndComponent];
-const sortableComponents = [SimpleSortableComponent, MultiSortableComponent, RecycleMultiSortableComponent, EmbeddedSortableComponent, SimpleSortableCopyComponent];
+const sortableComponents = [SimpleSortableComponent, MultiSortableComponent, RecycleMultiSortableComponent, EmbeddedSortableComponent, SimpleSortableCopyComponent, SimpleSortableCopyDragComponent];
 
 @NgModule({
     imports: [BrowserModule, FormsModule, DndModule.forRoot()],
